@@ -67,6 +67,20 @@ describe('helper functions', () => {
     })
   })
 
+  describe('pluralize', () => {
+    test('return helper', () => {
+      expect(helpers.pluralize('helper')).toBe('helpers')
+    })
+
+    test('return proofs', () => {
+      expect(helpers.pluralize('proof')).toBe('proofs')
+    })
+
+    test('return knives', () => {
+      expect(helpers.pluralize('knife')).toBe('knives')
+    })
+  })
+
   describe('possessive', () => {
     test('returns a possessive version of a string', () => {
       expect(helpers.possessive('test')).toBe("test's")

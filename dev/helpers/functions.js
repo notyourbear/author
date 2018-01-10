@@ -1,3 +1,5 @@
+const pluralise = require('pluralize')
+
 const functions = {}
 
 const between = str => {
@@ -32,6 +34,8 @@ const modifier = (str, fnHash = {}) => {
   return (input = '') => pipe(input, fns)
 }
 
+const pluralize = str => pluralise(str)
+
 const possessive = str => `${str}'s`
 
 const sample = collection => {
@@ -47,6 +51,7 @@ module.exports = {
   capitalize,
   checkIfAlreadyGenerated,
   modifier,
+  pluralize,
   possessive,
   sample,
   uppercase
