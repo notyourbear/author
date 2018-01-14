@@ -9,7 +9,7 @@ describe('Parser', () => {
       model: 'animal',
       property: 'mammal'
     }
-    
+
     expect(test).toContainEqual(expected)
   })
 
@@ -20,9 +20,21 @@ describe('Parser', () => {
       model: 'animal',
       property: 'mammal',
       character: 'subject',
-      modifier: 'capitalize'
+      modifier: ['capitalize']
     }
-    
+
+    expect(test).toContainEqual(expected)
+  })
+
+  test('it returns one parsable item, unlocked with two modifiers', () => {
+    const grammar = "the quick brown ::animal.mammal|capitalize|pluralize:: jump."
+    const test = parser(grammar)
+    const expected = {
+      model: 'animal',
+      property: 'mammal',
+      modifier: ['capitalize', 'pluralize']
+    }
+
     expect(test).toContainEqual(expected)
   })
 

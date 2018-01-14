@@ -1,26 +1,29 @@
-// need to still deal with multiple modifiers
-
 const parser = grammar => {
   const regex = /::\.|[^ ]*::/g
   const variables = grammar.match(regex)
-  let modifier = false;
+  let modifier = false
 
   const models = variables.map(variable => {
-    let props = variable.slice(2, -2).split('.');
-    const last = props[props.length - 1];
-    const propertyAndModifier = last.split('|');
-    if (propertyAndModifier.length === 2) modifier = true;
-    return props.slice(0, -1).concat(propertyAndModifier)
+    let props = variable.slice(2, -2).split('.')
+    const last = props[props.length - 1]
+    const propertyAndModifiers = last.split('|')
+    if (propertyAndModifiers.length >= 2) modifier = true
+    const property = propertyAndModifiers[0]
+    const modifiers = propertyAndModifiers.slice(1)
+
+    let final = props.slice(0, -1).concat(property)
+    if (modifiers.length > 0) final.push(modifiers)
+    return final
   })
 
   return models.map(m => {
-    let keys;
+    let keys
     if (modifier) {
       keys = m.length === 4 ?
-        ['model', 'character', 'property', 'modifier'] : ['model', 'property', 'modifier'];
+        ['model', 'character', 'property', 'modifier'] : ['model', 'property', 'modifier']
     } else {
       keys = m.length === 3 ?
-        ['model', 'character', 'property'] : ['model', 'property'];
+        ['model', 'character', 'property'] : ['model', 'property']
     }
 
 
