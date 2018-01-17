@@ -1,7 +1,6 @@
 const parser = require('./parser')
 
-describe('Parser', () => {
-
+describe('parser', () => {
   test('it returns one parsable item, not locked', () => {
     const grammar = "the quick brown ::animal.mammal:: jumps."
     const test = parser(grammar)
