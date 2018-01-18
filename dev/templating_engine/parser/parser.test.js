@@ -53,4 +53,34 @@ describe('parser', () => {
     expect(test).toContainEqual(expectedNotLocked)
     expect(test).toContainEqual(expectedLocked)
   })
+
+  test('it returns a helper function', () => {
+    const grammar = "the age of ::>number:20-50::"
+    const test = parser(grammar)
+
+    const expected = {
+      helper: 'number',
+      input: '20-50'
+    }
+
+    expect(test).toContainEqual(expected)
+  })
+
+  test('it returns a parsed item, non locked, and a helper function', () => {
+    const grammar = "the age of ::human.name:: is ::>number:20-50::"
+    const test = parser(grammar)
+
+    const expectedHelper = {
+      helper: 'number',
+      input: '20-50'
+    }
+
+    const expectedParser = {
+      model: 'human',
+      property: 'name'
+    }
+
+    expect(test).toContainEqual(expectedHelper)
+    expect(test).toContainEqual(expectedParser) 
+  })
 })
