@@ -1,5 +1,44 @@
 const parsingFns = require('./functions')
+
 describe('parser functions', () => {
+  describe('grammarExpander', () => {
+    const models = {
+      grammar: 'hello',
+      body: {
+        hello: 'this is not goodbye',
+        recurse: '::!grammar::, i say!'
+      }
+    }
+
+    test('returns an entry where there are no grammars to expand', () => {
+      const entry =  'once a long time ago, ::model::'
+      const test = parsingFns.grammarExpander(entry)
+      expect(test).toBe(entry)
+    })
+
+    test('returns an entry where there are two grammars to expand and a model', () => {
+      const entry =  'once a long time ago, not ::model:: but only ::!grammar::, ::!body.hello::'
+      const result =  'once a long time ago, not ::model:: but only hello, this is not goodbye'
+      const test = parsingFns.grammarExpander(entry, models)
+      expect(test).toBe(result)
+    })
+
+    test('returns an entry where there is a recursive grammar', () => {
+      const entry =  'once a long time ago, ::!body.recurse::'
+      const result =  'once a long time ago, hello, i say!'
+      const test = parsingFns.grammarExpander(entry, models)
+      expect(test).toBe(result)
+    })
+
+    test('returns an entry where there is an error', () => {
+      const entry =  'once a long time ago, ::!body.error::'
+      const result =  'once a long time ago, Error: The grammar: body,error does not appear to exist'
+      const test = parsingFns.grammarExpander(entry, models)
+      expect(test).toBe(result)
+    })
+  })
+
+
   describe('regexer', () => {
   	test('returns an array with one item', () => {
     	const grammar = "the quick brown ::animal.mammal:: jumps."

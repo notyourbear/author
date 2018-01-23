@@ -61,7 +61,26 @@ const parser = regexArray => {
     return returnValue(type, props.concat(property))
   })
 }
+
+const grammarExpander = (entry, grammars = {}) => {
+  const regex = /::\.|[^ ]*::/g
+
+  return entry.replace(regex, match => {
+	if (match[2] !== '!') return match
+
+	const grammar = match.slice(3, -2).split('.')
+
+	const result = grammar.reduce((result, pointer) => {
+  	return result[pointer] ? result[pointer] : new Error(`The grammar: ${grammar} does not appear to exist`)
+	}, grammars)
+
+  if (result instanceof Error) return result
+	return result.match(regex) === null ? result : grammarExpander(result, grammars)
+  })
+}
+
 module.exports = {
+  grammarExpander,
   modeler,
   parser,
   propType,
