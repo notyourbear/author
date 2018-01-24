@@ -61,7 +61,7 @@ const parser = regexArray => {
     return returnValue(type, props.concat(property))
   })
 }
-
+// --------------------------------------------------------------
 const grammarExpander = (entry, grammars = {}) => {
   const regex = /::\.|[^ ]*::/g
 
