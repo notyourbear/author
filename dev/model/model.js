@@ -1,5 +1,5 @@
 //creates the subject models;
-const sample = require('../../helpers/functions').sample
+const sample = require('../helpers/functions').sample
 
 const Model = (schema, fnHash = {}) => {
   const keys = Object.keys(schema);

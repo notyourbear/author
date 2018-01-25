@@ -1,5 +1,5 @@
 const Model = require('./model')
-const helpers = require('../../helpers/functions');
+const helpers = require('../helpers/functions');
 
 describe('generator - Model', () => {
   describe('creates a model', () => {
