@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "eslint": "^4.14.0",
+    "fs-jetpack": "^1.2.0",
     "gulp": "^3.9.1",
     "jest": "^22.0.4",
     "pluralize": "^7.0.0"
