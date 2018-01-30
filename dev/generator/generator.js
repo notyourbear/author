@@ -2,10 +2,10 @@ const Compiler = require('../compiler/compiler.js')
 const helpers = require('../helpers/functions.js')
 const Model = require('../model/model.js')
 const Parser = require('../parser/parser.js')
+const loader = require('../loader/loader.js')
 
 const Generator = (jsonSchemaLocation, state = {}) => {
-  const jsonSchema = fs.readFileSync(jsonSchemaLocation)
-  const schema = JSON.parse(jsonSchema)
+  const schema = loader(jsonSchemaLocation)
   const grammars = schema.grammar
   const { expandedGrammar, toModel } = Parser(schema.entry, grammars)
 

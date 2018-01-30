@@ -15,7 +15,7 @@ const schema = {
 
 describe('generator', () => {
   test('it works', () => {
-    const gened = Generator('test.json')
+    const gened = Generator("dev/generator")
     const expected = {
       compiled: "Patrick went with Patrick to the farmer's favorite the market",
       state: {

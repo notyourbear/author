@@ -1,10 +1,12 @@
-"model": {
-  "farmer": {
-    "name": ["Patrick"],
-    "title": ["farmer"]
+{
+  "model": {
+    "farmer": {
+      "name": ["Patrick"],
+      "title": ["farmer"]
+    }
+  },
+  "entry": "::farmer.name:: went with ::farmer.Head.name:: to ::!place::",
+  "grammar": {
+    "place": "the ::farmer.Head.title::'s favorite the market"
   }
-},
-"entry": "::farmer.name:: went with ::farmer.Head.name:: to ::!place::",
-"grammar": {
-  "place": "the ::farmer.Head.title::'s favorite the market"
 }
