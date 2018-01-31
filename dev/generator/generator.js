@@ -10,7 +10,7 @@ const Generator = (jsonSchemaLocation, state = {}) => {
   const { expandedGrammar, toModel } = Parser(schema.entry, grammars)
 
   const models = toModel.map(model => {
-    let character;
+    let character
     if (model.character) {
       character = state[model.character] || Model(schema.model[model.model], helpers)
       state[model.character] = character
@@ -20,7 +20,7 @@ const Generator = (jsonSchemaLocation, state = {}) => {
   })
 
   const compiled = Compiler(expandedGrammar, models)
-  return { compiled, state };
+  return { compiled, state }
 }
 
-module.exports = Generator;
+module.exports = Generator

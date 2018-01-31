@@ -50,7 +50,7 @@ const parser = regexArray => {
 
   return regexArray.map(item => {
     const props = item.slice(2, -2).split('.')
-    const type = propType(props);
+    const type = propType(props)
     if (type === 'helper') return returnValue(type, props[0].slice(1).split(':'))
     if (type === 'grammar') {
       var option = [props[0].slice(1), ...props.slice(1)].join('.')
@@ -71,7 +71,7 @@ const grammarExpander = (entry, grammars = {}) => {
 	const grammar = match.slice(3, -2).split('.')
 
 	const result = grammar.reduce((result, pointer) => {
-  	return result[pointer] ? result[pointer] : new Error(`The grammar: ${grammar} does not appear to exist`)
+    return result[pointer] ? result[pointer] : new Error(`The grammar: ${grammar} does not appear to exist`)
 	}, grammars)
 
   if (result instanceof Error) return result

@@ -1,5 +1,5 @@
 const Model = require('./model')
-const helpers = require('../helpers/functions');
+const helpers = require('../helpers/functions')
 
 describe('generator - Model', () => {
   describe('creates a model', () => {
@@ -17,7 +17,7 @@ describe('generator - Model', () => {
 
     test('it should modify the model if given a modifier function', () => {
       const test = {
-        yearOfRelease: ":;between:<1980-1980",
+        yearOfRelease: ':;between:<1980-1980',
       }
 
       const hash = {
@@ -31,7 +31,7 @@ describe('generator - Model', () => {
 
     test('it should not have a fn', () => {
       const test = {
-        yearOfRelease: ":;between:<1980-1980"
+        yearOfRelease: ':;between:<1980-1980'
       }
 
       const hash = {

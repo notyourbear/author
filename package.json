@@ -6,7 +6,8 @@
   "description": "A model-backed generative text grammar tool",
   "license": "MIT",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "lint": "eslint ./dev"
   },
   "dependencies": {
     "eslint": "^4.14.0",

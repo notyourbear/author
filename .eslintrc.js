@@ -23,5 +23,9 @@ module.exports = {
     "semi": [
       "error",
       "never"
+    ],
+    "no-undef": [
+      "off"
     ]
   }
+}

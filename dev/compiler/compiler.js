@@ -3,8 +3,8 @@ const compiler = (grammar, replacementsArray) => {
   let string = grammar
 
   return replacementsArray.reduce((result, replacement) => {
-	return result.replace(regex, replacement)
-}, string)
+    return result.replace(regex, replacement)
+  }, string)
 }
 
 module.exports = compiler

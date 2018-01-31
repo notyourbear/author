@@ -58,17 +58,17 @@ describe('helper functions', () => {
 
     test('should use both modifiers', () => {
       const result = helpers.modifier('capitalize|possessive', fnHash)('test')
-      expect(result).toBe("Test's")
+      expect(result).toBe('Test\'s')
     })
 
     test('should spit out unchanged str if no modifier provided', () => {
       const result = helpers.modifier('', fnHash)('test')
-      expect(result).toBe("test")
+      expect(result).toBe('test')
     })
 
     test('should not use modifiers if not in hash', () => {
       const result = helpers.modifier('capitalize|iDontExist', fnHash)('test')
-      expect(result).toBe("Test")
+      expect(result).toBe('Test')
     })
   })
 
@@ -88,7 +88,7 @@ describe('helper functions', () => {
 
   describe('possessive', () => {
     test('returns a possessive version of a string', () => {
-      expect(helpers.possessive('test')).toBe("test's")
+      expect(helpers.possessive('test')).toBe('test\'s')
     })
   })
 

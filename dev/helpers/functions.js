@@ -1,7 +1,5 @@
 const pluralise = require('pluralize')
 
-const functions = {}
-
 const between = str => {
   const options = str.split('-').map(Number)
   return getRandomInt(options[0], options[1])

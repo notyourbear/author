@@ -14,10 +14,9 @@ const Parser = (entry, grammars) => {
   toModel = modeler(toModel)
 
   return {
-	toModel,
-	expandedGrammar
+    toModel,
+    expandedGrammar
   }
 }
 
-
-module.exports = Parser;
+module.exports = Parser
