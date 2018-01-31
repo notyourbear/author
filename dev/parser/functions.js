@@ -18,7 +18,7 @@ const modeler = toParseArray => {
     }
 
     return keys.reduce((result, key, index) => {
-      if (model.toParse[index]) result[key] = model.toParse[index]
+      result[key] = model.toParse[index]
       return Object.assign({}, result, {type: 'model'})
     }, {})
   })

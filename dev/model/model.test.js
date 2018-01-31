@@ -28,5 +28,18 @@ describe('generator - Model', () => {
 
       expect(model.yearOfRelease).toEqual(1980)
     })
+
+    test('it should not have a fn', () => {
+      const test = {
+        yearOfRelease: ":;between:<1980-1980"
+      }
+
+      const hash = {
+        bn: helpers.between
+      }
+
+      const model = Model(test, hash)
+      expect(model.yearOfRelease).toEqual(':;between:<1980-1980')
+    })
   })
 })

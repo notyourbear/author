@@ -51,6 +51,11 @@ describe('helper functions', () => {
       possessive: helpers.possessive
     }
 
+    test('uses no fnhashes', () => {
+      const result = helpers.modifier('capitalize')()
+      expect(result).toBe('')
+    })
+
     test('should use both modifiers', () => {
       const result = helpers.modifier('capitalize|possessive', fnHash)('test')
       expect(result).toBe("Test's")

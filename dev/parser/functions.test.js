@@ -122,6 +122,7 @@ describe('parser functions', () => {
         { type: 'modifiedModel', toParse: ['animal', 'mammal', ['capitalize', 'possessive']] },
         { type: 'model', toParse: ['animal', 'mammal'] },
         { type: 'model', toParse: ['animal', 'subject', 'mammal'] },
+        { type: 'model', toParse: ['animal', 'donkey'] },
         { type: 'modifiedModel', toParse: ['animal', 'subject', 'mammal', ['capitalize']] }
       ]
     	const test = parsingFns.modeler(parse);
@@ -132,12 +133,14 @@ describe('parser functions', () => {
     	const expectedLockedModel = { type: 'model', model: 'animal', property: 'mammal', character: 'subject' }
     	const expectedModifiedModel = { type: 'model', model: 'animal', property: 'mammal', modifier: ['capitalize', 'possessive'] }
     	const expectedLockedModifiedModel = { type: 'model', model: 'animal', property: 'mammal', modifier: ['capitalize'], character: 'subject' }
-    	expect(test).toContainEqual(expectedHelper)
+      const expectedNothing = {"model": "animal", "property": "donkey", "type": "model"};
+      expect(test).toContainEqual(expectedHelper)
     	expect(test).toContainEqual(expectedGrammar)
     	expect(test).toContainEqual(expectedModel)
     	expect(test).toContainEqual(expectedLockedModel)
     	expect(test).toContainEqual(expectedLockedModifiedModel)
     	expect(test).toContainEqual(expectedModifiedModel)
+      expect(test).toContainEqual(expectedNothing)
   	})
   })
 })
