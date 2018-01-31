@@ -32,19 +32,19 @@ const regexer = grammar => {
 // --------------------------------------------------------------
 const propType = props => {
   switch (true) {
-    case props[0][0] === '>': return 'helper'
-    case props[0][0] === '!': return 'grammar'
-    case props[props.length - 1].includes('|'): return 'modifiedModel'
-    default: return 'model'
+  case props[0][0] === '>': return 'helper'
+  case props[0][0] === '!': return 'grammar'
+  case props[props.length - 1].includes('|'): return 'modifiedModel'
+  default: return 'model'
   }
 }
 // --------------------------------------------------------------
 const parser = regexArray => {
   const returnValue = (type, toParse) => {
     switch (type) {
-      case 'helper': return { type, helper: toParse[0], input: toParse[1] }
-      case 'grammar': return { type, grammar: toParse[0] }
-      default: return { type, toParse }
+    case 'helper': return { type, helper: toParse[0], input: toParse[1] }
+    case 'grammar': return { type, grammar: toParse[0] }
+    default: return { type, toParse }
     }
   }
 
@@ -66,16 +66,16 @@ const grammarExpander = (entry, grammars = {}) => {
   const regex = /::\.|[^ ]*::/g
 
   return entry.replace(regex, match => {
-	if (match[2] !== '!') return match
+    if (match[2] !== '!') return match
 
-	const grammar = match.slice(3, -2).split('.')
+    const grammar = match.slice(3, -2).split('.')
 
-	const result = grammar.reduce((result, pointer) => {
-    return result[pointer] ? result[pointer] : new Error(`The grammar: ${grammar} does not appear to exist`)
-	}, grammars)
+    const result = grammar.reduce((result, pointer) => {
+      return result[pointer] ? result[pointer] : new Error(`The grammar: ${grammar} does not appear to exist`)
+    }, grammars)
 
-  if (result instanceof Error) return result
-	return result.match(regex) === null ? result : grammarExpander(result, grammars)
+    if (result instanceof Error) return result
+    return result.match(regex) === null ? result : grammarExpander(result, grammars)
   })
 }
 
