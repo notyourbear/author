@@ -4,8 +4,10 @@ const Model = require('../model/model.js')
 const Parser = require('../parser/parser.js')
 const loader = require('../loader/loader.js')
 
-const Generator = (jsonSchemaLocation, state = {}) => {
-  const schema = loader(jsonSchemaLocation)
+const Generator = (jsonSchemaLocation, stateLocation = {}) => {
+  const schema = typeof jsonSchemaLocation === 'string' ? loader(jsonSchemaLocation) : jsonSchemaLocation
+  const state = typeof stateLocation === 'string' ? loader(stateLocation) : stateLocation
+
   const grammars = schema.grammar
   const { expandedGrammar, toModel } = Parser(schema.entry, grammars)
 

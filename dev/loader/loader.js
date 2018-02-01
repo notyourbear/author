@@ -11,14 +11,15 @@ const loader = location => {
     const cats = ['model', 'grammar']
 
     cats.forEach(cat => {
-      Object.keys(snippet[cat]).forEach(key => {
-
-        if (sp[cat][key]) {
-          sp[cat][key] = [].concat(sp[cat][key], snippet[cat][key])
-        } else {
-          sp[cat][key] = snippet[cat][key]
-        }
-      })
+      if (snippet[cat]) {
+        Object.keys(snippet[cat]).forEach(key => {
+          if (sp[cat][key]) {
+            sp[cat][key] = [].concat(sp[cat][key], snippet[cat][key])
+          } else {
+            sp[cat][key] = snippet[cat][key]
+          }
+        })
+      }
     })
     if (snippet.entry) sp.entry = snippet.entry
 
@@ -28,7 +29,7 @@ const loader = location => {
     grammar: {},
     entry: null
   })
-  
+
   return specs
 }
 
