@@ -4,24 +4,29 @@ const Model = require('../model/model.js')
 const Parser = require('../parser/parser.js')
 const loader = require('../loader/loader.js')
 
-const Generator = (jsonSchemaLocation, stateLocation = {}) => {
-  const schema = typeof jsonSchemaLocation === 'string' ? loader(jsonSchemaLocation) : jsonSchemaLocation
-  const state = typeof stateLocation === 'string' ? loader(stateLocation) : stateLocation
+const Generator = (jsonSchemaLocation, options = {}) => {
+  let state = options.state ? options.state : {}
+  let modifiers = options.modifiers ? options.modifiers : {}
 
+  const schema = typeof jsonSchemaLocation === 'string' ? loader(jsonSchemaLocation) : jsonSchemaLocation
+  state = typeof state === 'string' ? loader(state) : state
+
+  modifiers = Object.assign({}, helpers, modifiers)
   const grammars = schema.grammar
   const { expandedGrammar, toModel } = Parser(schema.entry, grammars)
 
   const models = toModel.map(model => {
-    let character
-    if (model.character) {
-      character = state[model.character] || Model(schema.model[model.model], helpers)
-      state[model.character] = character
+    if (model.type === 'helper') {
+      return modifiers[model.helper](model.input)
     }
-    character =  Model(schema.model[model.model], helpers)
+    let character = state[model.character] || Model(schema.model[model.model], modifiers)
+    state[model.character] = character
+
     return character[model.property]
   })
 
   const compiled = Compiler(expandedGrammar, models)
+
   return { compiled, state }
 }
 

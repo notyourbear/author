@@ -4,7 +4,7 @@ describe('generator', () => {
   test('it works using json', () => {
     const gened = Generator('dev/generator')
     const expected = {
-      compiled: 'Patrick went with Patrick to the farmer\'s favorite the market',
+      compiled: 'Patrick went with Patrick to the farmer\'s favorite market, which was built in 1999.',
       state: {
         Head: {
           name: 'Patrick',
@@ -17,9 +17,9 @@ describe('generator', () => {
   })
 
   test('it works using json state', () => {
-    const gened = Generator('dev/generator', 'dev/generator/state')
+    const gened = Generator('dev/generator', { state: 'dev/generator/state'})
     const expected = {
-      compiled: 'Patrick went with Patrick to the farmer\'s favorite the market',
+      compiled: 'Patrick went with Patrick to the farmer\'s favorite market, which was built in 1999.',
       state: {
         Head: {
           name: 'Patrick',
@@ -41,7 +41,7 @@ describe('generator', () => {
       },
       entry: '::farmer.name:: went with ::farmer.Head.name:: to ::!place::',
       grammar: {
-        place: 'the ::farmer.Head.title::\'s favorite the market'
+        place: 'the ::farmer.Head.title::\'s favorite market, which was built in ::>between:1999-1999::.'
       }
     }
 
@@ -52,9 +52,9 @@ describe('generator', () => {
       }
     }
 
-    const gened = Generator(schema, state)
+    const gened = Generator(schema, {state})
     const expected = {
-      compiled: 'Patrick went with Patrick to the farmer\'s favorite the market',
+      compiled: 'Patrick went with Patrick to the farmer\'s favorite market, which was built in 1999.',
       state: {
         Head: {
           name: 'Patrick',
