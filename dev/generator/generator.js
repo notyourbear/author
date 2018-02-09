@@ -19,10 +19,19 @@ const Generator = (jsonSchemaLocation, options = {}) => {
     if (model.type === 'helper') {
       return modifiers[model.helper](model.input)
     }
+
     let character = state[model.character] || Model(schema.model[model.model], modifiers)
     state[model.character] = character
 
-    return character[model.property]
+    let property = character[model.property]
+    if (model.modifier) {
+      property = model.modifier.reduce((result, modifier) => {
+        const modifierFn = modifiers[modifier]
+        return modifierFn(result)
+      }, property)
+    }
+
+    return property;
   })
 
   const compiled = Compiler(expandedGrammar, models)

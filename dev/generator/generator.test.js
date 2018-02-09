@@ -69,4 +69,37 @@ describe('generator', () => {
     expect(gened.compiled).toBe(expected.compiled)
     expect(gened.state).toMatchObject(expected.state)
   })
+
+  test('it works with a provided modifier', () => {
+    const startsWithS = string => {
+      return `s${string.slice(1)}`;
+    }
+
+    const schema = {
+      model: {
+        farmer: {
+          name: ['Patrick'],
+          title: ['farmer']
+        }
+      },
+      entry: '::farmer.name|startsWithS|capitalize:: went with ::farmer.Head.name:: to the market.',
+    }
+
+    const options = {
+      modifiers: { startsWithS }
+    }
+
+    const gened = Generator(schema, options)
+    const expected = {
+      compiled: 'Satrick went with Patrick to the market.',
+      state: {
+        Head: {
+          name: 'Patrick',
+          title: 'farmer'
+        }
+      }
+    }
+    expect(gened.compiled).toBe(expected.compiled)
+    expect(gened.state).toMatchObject(expected.state)
+  })
 })
