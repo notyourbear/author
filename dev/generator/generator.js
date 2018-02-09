@@ -32,7 +32,7 @@ const Generator = (jsonSchemaLocation, options = {}) => {
       }, property)
     }
 
-    return property;
+    return property
   })
 
   const compiled = Compiler(expandedGrammar, models)

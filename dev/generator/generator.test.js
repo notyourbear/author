@@ -72,7 +72,7 @@ describe('generator', () => {
 
   test('it works with a provided modifier', () => {
     const startsWithS = string => {
-      return `s${string.slice(1)}`;
+      return `s${string.slice(1)}`
     }
 
     const schema = {
