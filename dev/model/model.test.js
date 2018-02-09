@@ -17,7 +17,7 @@ describe('generator - Model', () => {
 
     test('it should modify the model if given a modifier function', () => {
       const test = {
-        yearOfRelease: ':;between:<1980-1980',
+        yearOfRelease: '|between:1980-1980',
       }
 
       const hash = {
@@ -31,7 +31,7 @@ describe('generator - Model', () => {
 
     test('it should not have a fn', () => {
       const test = {
-        yearOfRelease: ':;between:<1980-1980'
+        yearOfRelease: '|between:1980-1980'
       }
 
       const hash = {
@@ -39,7 +39,7 @@ describe('generator - Model', () => {
       }
 
       const model = Model(test, hash)
-      expect(model.yearOfRelease).toEqual(':;between:<1980-1980')
+      expect(model.yearOfRelease).toEqual('|between:1980-1980')
     })
   })
 })

@@ -21,9 +21,10 @@ const Generator = (jsonSchemaLocation, options = {}) => {
     }
 
     let character = state[model.character] || Model(schema.model[model.model], modifiers)
-    state[model.character] = character
+    if (model.character) state[model.character] = character
 
     let property = character[model.property]
+
     if (model.modifier) {
       property = model.modifier.reduce((result, modifier) => {
         const modifierFn = modifiers[modifier]
@@ -35,7 +36,6 @@ const Generator = (jsonSchemaLocation, options = {}) => {
   })
 
   const compiled = Compiler(expandedGrammar, models)
-
   return { compiled, state }
 }
 

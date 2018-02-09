@@ -79,10 +79,11 @@ describe('generator', () => {
       model: {
         farmer: {
           name: ['Patrick'],
-          title: ['farmer']
+          title: ['farmer'],
+          age: '|between:18-18'
         }
       },
-      entry: '::farmer.name|startsWithS|capitalize:: went with ::farmer.Head.name:: to the market.',
+      entry: '::farmer.name|startsWithS|capitalize::, who was ::farmer.age:: years old, went with ::farmer.Head.name:: to the market.',
     }
 
     const options = {
@@ -91,7 +92,7 @@ describe('generator', () => {
 
     const gened = Generator(schema, options)
     const expected = {
-      compiled: 'Satrick went with Patrick to the market.',
+      compiled: 'Satrick, who was 18 years old, went with Patrick to the market.',
       state: {
         Head: {
           name: 'Patrick',
