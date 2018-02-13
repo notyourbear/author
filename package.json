@@ -1,6 +1,6 @@
 {
   "name": "deutung",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "index.js",
   "author": "Patrick Racenberg",
   "description": "A model-backed generative text grammar tool",
@@ -8,8 +8,8 @@
   "scripts": {
     "test": "yarn lint && jest --coverage",
     "lint": "eslint ./dev",
-    "build": "rimraf index.js && ./node_modules/.bin/rollup -c",
-    "build-prod": "NODE_ENV=production ./node_modules/.bin/rollup -c"
+    "builddep": "rimraf index.js && ./node_modules/.bin/rollup -c",
+    "builddep-prod": "NODE_ENV=production ./node_modules/.bin/rollup -c"
   },
   "dependencies": {
     "fs-jetpack": "^1.2.0",
