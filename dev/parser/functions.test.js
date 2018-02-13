@@ -64,7 +64,7 @@ describe('parser functions', () => {
   })
   describe('propType', () => {
     test('returns propType: helper', () => {
-      const parse = ['>inBetween:1000-2000']
+      const parse = ['|inBetween:1000-2000']
       const test = parsingFns.propType(parse)
       expect(test).toEqual('helper')
     })
@@ -86,7 +86,7 @@ describe('parser functions', () => {
   })
   describe('parser', () => {
     const options = {
-      helper: '::>inBetween:1000-2000::',
+      helper: '::|inBetween:1000-2000::',
       grammar: '::!fishing.story::',
       modifiedModel: '::animal.mammal|capitalize|possessive::',
       model: '::animal.mammal::'

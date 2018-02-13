@@ -32,7 +32,7 @@ const regexer = grammar => {
 // --------------------------------------------------------------
 const propType = props => {
   switch (true) {
-  case props[0][0] === '>': return 'helper'
+  case props[0][0] === '|': return 'helper'
   case props[0][0] === '!': return 'grammar'
   case props[props.length - 1].includes('|'): return 'modifiedModel'
   default: return 'model'

@@ -41,7 +41,7 @@ describe('generator', () => {
       },
       entry: '::farmer.name:: went with ::farmer.Head.name:: to ::!place::',
       grammar: {
-        place: 'the ::farmer.Head.title::\'s favorite market, which was built in ::>between:1999-1999::.'
+        place: 'the ::farmer.Head.title::\'s favorite market, which was built in ::|between:1999-1999::.'
       }
     }
 
