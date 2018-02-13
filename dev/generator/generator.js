@@ -5,6 +5,7 @@ const Parser = require('../parser/parser.js')
 const loader = require('../loader/loader.js')
 
 const Generator = (jsonSchemaLocation, options = {}) => {
+  const seed = options.seed
   let state = options.state ? options.state : {}
   let modifiers = options.modifiers ? options.modifiers : {}
 
@@ -20,7 +21,7 @@ const Generator = (jsonSchemaLocation, options = {}) => {
       return modifiers[model.helper](model.input)
     }
 
-    let character = state[model.character] || Model(schema.model[model.model], modifiers)
+    let character = state[model.character] || Model(schema.model[model.model], modifiers, seed)
     if (model.character) state[model.character] = character
 
     let property = character[model.property]
@@ -28,7 +29,7 @@ const Generator = (jsonSchemaLocation, options = {}) => {
     if (model.modifier) {
       property = model.modifier.reduce((result, modifier) => {
         const modifierFn = modifiers[modifier]
-        return modifierFn(result)
+        return modifierFn(result, seed)
       }, property)
     }
 
