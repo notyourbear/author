@@ -1,8 +1,9 @@
 const pluralise = require('pluralize')
+const seedrandom = require('seedrandom')
 
-const between = str => {
+const between = (str, seed) => {
   const options = str.split('-').map(Number)
-  return getRandomInt(options[0], options[1])
+  return getRandomInt(options[0], options[1], seed)
 }
 
 const capitalize = str => str[0].toUpperCase() + str.slice(1)
@@ -16,8 +17,9 @@ const checkIfAlreadyGenerated = (model1, model2, simsAllowed = 0) => {
   return similarities >= simsAllowed
 }
 
-const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min)) + min
+const getRandomInt = (min, max, seed) => {
+  const rng = seed ? seedrandom(seed) : seedrandom()
+  return Math.floor(rng() * (max - min)) + min
 }
 
 const modifier = (str, fnHash = {}) => {
@@ -36,9 +38,9 @@ const pluralize = str => pluralise(str)
 
 const possessive = str => `${str}'s`
 
-const sample = collection => {
+const sample = (collection, seed) => {
   if (typeof collection === 'string') return collection
-  const index = getRandomInt(0, collection.length)
+  const index = getRandomInt(0, collection.length, seed)
   return collection[index]
 }
 

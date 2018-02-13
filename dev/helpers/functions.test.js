@@ -103,6 +103,13 @@ describe('helper functions', () => {
 
       expect((result === 1 || result === 2 || result === 3)).toBeTruthy()
     })
+
+    test('it returns a deterministic answer', () => {
+      const options = [1,2,3,4,5,6,7,8]
+      const seed = 'my seed is my password'
+
+      expect(helpers.sample(options, seed)).toBe(1)
+    })
   })
 
   describe('uppercase', () => {
