@@ -1,6 +1,6 @@
 {
   "name": "deutung",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "index.js",
   "author": "Patrick Racenberg",
   "description": "A model-backed generative text grammar tool",

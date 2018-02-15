@@ -29,6 +29,5 @@ dist/
 
 ### System Files ###
 .DS_Store
-README.md
 
 /coverage
