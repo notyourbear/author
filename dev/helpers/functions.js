@@ -1,5 +1,5 @@
-const pluralise = require('pluralize')
-const seedrandom = require('seedrandom')
+import pluralise from 'pluralize'
+import seedrandom from 'seedrandom'
 
 const between = (str, seed) => {
   const options = str.split('-').map(Number)
@@ -46,7 +46,7 @@ const sample = (collection, seed) => {
 
 const uppercase = str => str.toUpperCase()
 
-module.exports = {
+export default {
   between,
   capitalize,
   checkIfAlreadyGenerated,

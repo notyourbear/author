@@ -1,4 +1,4 @@
-const Generator = require('./generator.js')
+import Generator from './generator.js'
 
 describe('generator', () => {
   test('it works using json', () => {

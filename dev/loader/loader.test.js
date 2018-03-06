@@ -1,9 +1,9 @@
-const loader = require('./loader.js')
+import loader from './loader.js'
 
 describe('loader', () => {
   test('it works', () => {
     const specs = loader('dev/loader')
-    const expected = { 
+    const expected = {
       model:
          {
            farmer: { name: ['Patrick'], title: ['farmer'] },

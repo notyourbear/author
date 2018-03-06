@@ -1,8 +1,8 @@
-const Compiler = require('../compiler/compiler.js')
-const helpers = require('../helpers/functions.js')
-const Model = require('../model/model.js')
-const Parser = require('../parser/parser.js')
-const loader = require('../loader/loader.js')
+import Compiler from '../compiler/compiler.js'
+import helpers from '../helpers/functions.js'
+import Model from '../model/model.js'
+import Parser from '../parser/parser.js'
+import loader from '../loader/loader.js'
 
 const Generator = (jsonSchemaLocation, options = {}) => {
   const seed = options.seed

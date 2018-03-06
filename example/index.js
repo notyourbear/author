@@ -1,4 +1,4 @@
-const Deutung = require('../index.js');
+import Deutung from '../index.js'
 
 const schema = {
   model: {

@@ -1,5 +1,5 @@
-const jetpack = require('fs-jetpack')
-const path = require('path')
+import jetpack from 'fs-jetpack'
+import path from 'path'
 
 const loader = location => {
   const snippetFiles = jetpack.find(path.resolve(`${location}`), {
@@ -33,4 +33,4 @@ const loader = location => {
   return specs
 }
 
-module.exports = loader
+export default loader

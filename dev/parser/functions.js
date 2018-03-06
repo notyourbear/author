@@ -79,7 +79,7 @@ const grammarExpander = (entry, grammars = {}) => {
   })
 }
 
-module.exports = {
+export default {
   grammarExpander,
   modeler,
   parser,

@@ -77,4 +77,11 @@ Model properties can be provided as strings or array of strings. In the event of
 
 Models also can be provided with functions to produce a result. In the example above, the built-in function `between` is provided to create a number between `25` and `40`. Functions are provided as strings that start with a `|` and take on the following structure `|[functionName]:[providedInput]-[providedInput]`.
 
-Deutung comes with 
+Deutung comes with the following functions built-in:
+- between (low, high): returns a number between `low` and `high`, inclusive.
+- capitalize (string): returns capitalized `string`.
+- pluralize (string): returns plural form of `string`.
+- possessive (string): returns possessive case of `string`.
+- uppercase (string): returns uppercase version of `string`.
+
+Functions can be used in models or directly in grammars.

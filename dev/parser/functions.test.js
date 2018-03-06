@@ -1,4 +1,4 @@
-const parsingFns = require('./functions')
+import parsingFns from './functions'
 
 describe('parser functions', () => {
   describe('grammarExpander', () => {

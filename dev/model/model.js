@@ -1,5 +1,6 @@
-//creates the subject models
-const sample = require('../helpers/functions').sample
+import fns from '../helpers/functions'
+
+const sample = fns.sample
 
 const Model = (schema, fnHash = {}, seed) => {
   const keys = Object.keys(schema)
@@ -15,4 +16,4 @@ const Model = (schema, fnHash = {}, seed) => {
   }, {})
 }
 
-module.exports = Model
+export default Model

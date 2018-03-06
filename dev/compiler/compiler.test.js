@@ -1,4 +1,4 @@
-const compiler = require('./compiler')
+import compiler from './compiler'
 
 describe('compiler', () => {
   test('it returns a compiled item', () => {

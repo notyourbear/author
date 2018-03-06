@@ -7,4 +7,4 @@ const compiler = (grammar, replacementsArray) => {
   }, string)
 }
 
-module.exports = compiler
+export default compiler

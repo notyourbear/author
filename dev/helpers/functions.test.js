@@ -1,4 +1,4 @@
-const helpers = require('./functions')
+import helpers from './functions'
 
 describe('helper functions', () => {
   describe('between', () => {

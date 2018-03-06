@@ -1,4 +1,4 @@
-const fns = require('./functions.js')
+import fns from './functions.js'
 
 const {
   grammarExpander,
@@ -19,4 +19,4 @@ const Parser = (entry, grammars) => {
   }
 }
 
-module.exports = Parser
+export default Parser

@@ -1,5 +1,5 @@
-const Model = require('./model')
-const helpers = require('../helpers/functions')
+import Model  from './model'
+import helpers from '../helpers/functions'
 
 describe('generator - Model', () => {
   describe('creates a model', () => {
