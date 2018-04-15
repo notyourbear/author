@@ -34,7 +34,7 @@ export default {
       main: true,
       browser: true,
       preferBuiltins: false,
-      modulesOnly: true
+      modulesOnly: false
     }),
     commonjs(),
     builtins(),

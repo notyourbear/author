@@ -1,7 +1,12 @@
 {
   "presets": [
-    "env",
     "jest",
-    [ "es2015", { "modules": false }]
-  ]
+    ["env",
+    { "modules": false }]
+  ],
+  "env": {
+    "test": {
+      "presets": [["env"]]
+    }
+  }
 }
