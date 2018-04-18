@@ -17,7 +17,8 @@ export default {
     globals: {
       pluralize: '$',
       seedrandom: '$',
-      'fs-jetpack': '$'
+      'fs-jetpack': '$',
+      articles: '$'
     }
   },
   plugins: [

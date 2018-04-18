@@ -1,6 +1,12 @@
 import helpers from './functions'
 
 describe('helper functions', () => {
+  describe('articlize', () => {
+    test('automatic returns an automatic', () => {
+      expect(helpers.articlize('automatic')).toBe('an automatic')
+    })
+  })
+
   describe('between', () => {
     test('gets 1 if between is 1-1', () => {
       expect(helpers.between('1-1')).toEqual(1)

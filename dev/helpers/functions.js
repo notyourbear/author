@@ -1,5 +1,8 @@
 import pluralise from 'pluralize'
 import seedrandom from 'seedrandom'
+import Articles from 'articles'
+
+const articlize = (string) => Articles.articlize(string)
 
 const between = (str, seed) => {
   const options = str.split('-').map(Number)
@@ -47,6 +50,7 @@ const sample = (collection, seed) => {
 const uppercase = str => str.toUpperCase()
 
 export default {
+  articlize,
   between,
   capitalize,
   checkIfAlreadyGenerated,
