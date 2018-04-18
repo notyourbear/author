@@ -78,6 +78,7 @@ Model properties can be provided as strings or array of strings. In the event of
 Models also can be provided with functions to produce a result. In the example above, the built-in function `between` is provided to create a number between `25` and `40`. Functions are provided as strings that start with a `|` and take on the following structure `|[functionName]:[providedInput]-[providedInput]`.
 
 Deutung comes with the following functions built-in:
+- articlize (string): returns the string with the grammatically correct 'a' or 'an' in front of it.
 - between (low, high): returns a number between `low` and `high`, inclusive.
 - capitalize (string): returns capitalized `string`.
 - pluralize (string): returns plural form of `string`.
