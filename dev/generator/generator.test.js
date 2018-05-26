@@ -104,6 +104,12 @@ describe('Generator', () => {
       let result = gen.sample({collection: arr, seed: 'this is a seed'});
       expect(result).toEqual(1);
     });
+
+    test('throw error if no collection provided', () => {
+      let gen = new Generator();
+      let e = gen.sample();
+      expect(e instanceof Error).toBe(true);
+    });
   });
 
   describe('Generator.run', () => {
@@ -189,7 +195,7 @@ describe('Generator', () => {
       };
       let grammar = {
         name: 'place',
-        value: 'farmer.Head.name|possessive:: market built in |between:1913-1930::'
+        value: 'farmer.Head.name|articlize|possessive:: market built in |between:1917-1917::'
       };
 
       gen.add({type: 'model', data: model});
@@ -197,7 +203,7 @@ describe('Generator', () => {
       gen.setEntry({value: 'farmer.name:: went with farmer.Head.name:: to !place::' });
 
       let result = gen.run({randomizeSchemaSelections: true});
-      expect(result).toBe('Patrick went with Benjamin to Benjamin\'s market built in 1928');
+      expect(result).toBe('Patrick went with Benjamin to a Benjamin\'s market built in 1917');
     });
   });
 
