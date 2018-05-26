@@ -85,7 +85,6 @@ class Generator {
       let split = match.split('.');
       split[split.length-1] = split[split.length-1].slice(0, -2);
       // remove trailing ::... figure out how to not include those in regex...
-
       switch (true) {
       case match[0] === '|':
         let [modifier, value] = match.splice(1).split(':');

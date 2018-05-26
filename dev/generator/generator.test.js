@@ -2,6 +2,29 @@ import Generator from './generator.js';
 
 describe('Generator', () => {
   describe('Generator.add', () => {
+    test('return error if no attributes are present', () => {
+      let gen = new Generator();
+      let e = gen.add({data: 'thing'});
+      let e2 = gen.add({name: 'thing'});
+      let e3 = gen.add();
+      expect(e instanceof Error).toBe(true);
+      expect(e2 instanceof Error).toBe(true);
+      expect(e3 instanceof Error).toBe(true);
+    });
+
+    test('return error if type is unnaccepted', () => {
+      let gen = new Generator();
+      let toAdd = {
+        name: 'farmer',
+        value: {
+          name: ['Patrick', 'Benjamin', 'Joe', 'Bill', 'Channing']
+        }
+      };
+
+      let e = gen.add({data: toAdd, type: 'Model'});
+      expect(e instanceof Error).toBe(true);
+    });
+
     test('add a model', () => {
       let toAdd = {
         name: 'farmer',
@@ -29,6 +52,20 @@ describe('Generator', () => {
       gen.add({type: 'grammar', data: grammar});
 
       expect(gen.schema.grammar).toMatchObject({place: grammar.value});
+    });
+
+    test('throw error if trying to add entry from unavailable grammar', () =>{
+      let gen = new Generator();
+      let e = gen.add({type: 'entry', data: {name: 'unavailable'}});
+      expect(e instanceof Error).toBe(true);
+    });
+
+    test('add a modifier', () => {
+      let double = (str) => `${str}${str}`;
+      let gen = new Generator();
+      gen.add({type: 'modifier', data: {name: 'double', value: double}});
+      expect(gen.modifier['double']).toBeDefined();
+      expect(gen.modify({ modifier: 'double', value:'hello'})).toEqual('hellohello');
     });
   });
 
@@ -120,6 +157,27 @@ describe('Generator', () => {
 
       expect(result).toBe('Patrick went with Benjamin to Benjamin\'s market');
     });
+
+    describe('with modified model in grammar', () => {
+      let gen = new Generator({seed: 'this is a seed for a name'});
+      let model = {
+        name: 'farmer',
+        value: {
+          name: ['Patrick', 'Benjamin', 'Joe', 'Bill', 'Chris']
+        }
+      };
+      let grammar = {
+        name: 'place',
+        value: 'farmer.Head.name|possessive:: market'
+      };
+
+      gen.add({type: 'model', data: model});
+      gen.add({type: 'grammar', data: grammar});
+      gen.setEntry({value: 'farmer.name:: went with farmer.Head.name:: to !place::' });
+
+      let result = gen.run({randomizeSchemaSelections: true});
+      expect(result).toBe('Patrick went with Benjamin to Benjamin\'s market');
+    });
   });
 
   describe('Generator.getState', () => {
@@ -137,7 +195,7 @@ describe('Generator', () => {
 
     gen.add({type: 'model', data: model});
     gen.add({type: 'grammar', data: grammar});
-    gen.setEntry({value:  'farmer.name:: went with farmer.Head.name:: to !place::' });
+    gen.setEntry({value: 'farmer.name:: went with farmer.Head.name:: to !place::' });
     gen.run();
     let state = gen.getState();
     expect(state).toMatchObject({'farmer': {'Head': {'name': 'Patrick'}}});
