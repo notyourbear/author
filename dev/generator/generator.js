@@ -162,24 +162,5 @@ class Generator {
     return collection[index];
   }
 }
-//
-// a = new Generator();
-// a.setEntry({value:  "farmer.name:: went with farmer.Head.name:: to !place::" })
-//
-// let model = {
-//   name: 'farmer',
-//   value: {
-//     name: ['Patrick', 'Benjamin', 'Joe', 'Bill', 'Channing']
-//   }
-// }
-//
-// let grammar = {
-//   name: 'place',
-//   value: 'farmer.Head.name::\'s market'
-// };
-//
-// a.add({type: 'model', data: model})
-// a.add({type: 'grammar', data: grammar})
-// a.run();
 
 module.exports = Generator;
