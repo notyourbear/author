@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "articles": "^0.2.2",
-    "fs-jetpack": "^1.2.0",
     "pluralize": "^7.0.0",
     "seedrandom": "^2.4.3"
   },
