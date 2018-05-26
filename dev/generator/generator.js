@@ -87,7 +87,7 @@ class Generator {
       // remove trailing ::... figure out how to not include those in regex...
       switch (true) {
       case match[0] === '|':
-        let [modifier, value] = match.splice(1).split(':');
+        let [modifier, value] = match.slice(1).split(':');
         return this.modify({modifier, value});
       case match[0] === '!':
         let grammar = options.grammar || this.schema.grammar;

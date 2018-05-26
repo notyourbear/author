@@ -178,6 +178,27 @@ describe('Generator', () => {
       let result = gen.run({randomizeSchemaSelections: true});
       expect(result).toBe('Patrick went with Benjamin to Benjamin\'s market');
     });
+
+    describe('with modifier in grammar', () => {
+      let gen = new Generator({seed: 'this is a seed for a name'});
+      let model = {
+        name: 'farmer',
+        value: {
+          name: ['Patrick', 'Benjamin', 'Joe', 'Bill', 'Chris']
+        }
+      };
+      let grammar = {
+        name: 'place',
+        value: 'farmer.Head.name|possessive:: market built in |between:1913-1930::'
+      };
+
+      gen.add({type: 'model', data: model});
+      gen.add({type: 'grammar', data: grammar});
+      gen.setEntry({value: 'farmer.name:: went with farmer.Head.name:: to !place::' });
+
+      let result = gen.run({randomizeSchemaSelections: true});
+      expect(result).toBe('Patrick went with Benjamin to Benjamin\'s market built in 1928');
+    });
   });
 
   describe('Generator.getState', () => {
