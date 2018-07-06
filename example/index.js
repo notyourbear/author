@@ -1,4 +1,5 @@
-import Deutung from '../index.js'
+var Deutung = require('../index.js');
+console.log(Deutung)
 
 const schema = {
   model: {
@@ -8,8 +9,10 @@ const schema = {
       age: '|between:18-43'
     }
   },
-  entry: '::farmer.name|capitalize::, who was ::farmer.age:: years old, went with ::farmer.Head.name:: to the market.',
+  entry: 'farmer.name|capitalize::, who was farmer.age:: years old, went with farmer.Head.name:: to the market.',
 }
 
-const gened = Deutung(schema)
-console.log(gened)
+const g = new Deutung(schema);
+let result = g.run();
+
+console.log(result)
