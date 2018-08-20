@@ -21,7 +21,7 @@ class Generator {
     this.state = options.state || {};
     this.entry = options.entry;
     this.seed = options.seed;
-    this.regex = options.regex ||  /\.|[^ ]*::/g;
+    this.regex = options.regex ||  /\z.|[^ ]*::/g;
     this.schema = options.schema || {
       grammar: {},
       model: {}
