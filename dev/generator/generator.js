@@ -78,7 +78,7 @@ class Generator {
     let regex = options.regex || this.regex;
     let model = options.model || this.schema.model;
     let state = options.state || this.state;
-    let seed = options.seed || this.seed || seedrandom()();
+    let seed = options.seed || this.seed || seedrandom.alea(Math.random())();
     let schema = options.schema || this.schema.model;
 
     return entry.replace(regex, match => {
@@ -149,13 +149,13 @@ class Generator {
   }
 
   sample(options = {}) {
-    let seed = options.seed || this.seed || seedrandom()();
+    let seed = options.seed || this.seed || seedrandom.alea(Math.random())();
     let collection = options.collection;
 
     if (collection === undefined) return new Error('no collection was provided from which to sample');
     if (typeof collection === 'string') return collection;
 
-    let rng = seedrandom(seed);
+    let rng = seedrandom.alea(seed);
     let index = Math.floor(rng() * collection.length);
     if (index < 0 || index >= collection.length) return new Error(`the calculated index of ${index} went out of bounds for this collection ${collection}`);
     return collection[index];

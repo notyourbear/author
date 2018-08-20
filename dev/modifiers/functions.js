@@ -21,7 +21,7 @@ const checkIfAlreadyGenerated = (model1, model2, simsAllowed = 0) => {
 };
 
 const getRandomInt = (min, max, seed) => {
-  const rng = seed ? seedrandom(seed) : seedrandom();
+  const rng = seed ? seedrandom.alea(seed) : seedrandom.alea(Math.random());
   return Math.floor(rng() * (max - min)) + min;
 };
 

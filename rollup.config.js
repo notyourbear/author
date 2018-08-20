@@ -1,7 +1,6 @@
 const babel = require('rollup-plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
-const uglify = require('rollup-plugin-uglify');
 const replace = require('rollup-plugin-replace');
 const progress = require('rollup-plugin-progress');
 const builtins = require('rollup-plugin-node-builtins');
@@ -17,18 +16,11 @@ export default {
     globals: {
       pluralize: '*',
       seedrandom: '*',
-      articles: '*'
+      articles: '*',
+      crypto: 'nodecrypto',
     }
   },
   plugins: [
-    replace({
-      exclude: 'node_modules/**',
-      ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-    }),
-    progress(),
-    babel({
-      exclude: 'node_modules/**',
-    }),
     resolve({
       jsnext: true,
       main: true,
@@ -37,9 +29,16 @@ export default {
       modulesOnly: false
     }),
     commonjs(),
-    builtins(),
+    replace({
+      exclude: 'node_modules/**',
+      ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+    }),
+    babel({
+      exclude: 'node_modules/**',
+    }),
     globals(),
-    (process.env.NODE_ENV === 'production' && uglify()),
-    filesize()
+    builtins(),
+    filesize(),
+    progress(),
   ]
 };

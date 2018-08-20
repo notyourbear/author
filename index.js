@@ -4885,7 +4885,7 @@ var checkIfAlreadyGenerated = function checkIfAlreadyGenerated(model1, model2) {
 };
 
 var getRandomInt = function getRandomInt(min, max, seed) {
-  var rng = seed ? seedrandom$2(seed) : seedrandom$2();
+  var rng = seed ? seedrandom$2.alea(seed) : seedrandom$2.alea(Math.random());
   return Math.floor(rng() * (max - min)) + min;
 };
 
@@ -5051,7 +5051,7 @@ var Generator = function () {
       var regex = options.regex || this.regex;
       var model = options.model || this.schema.model;
       var state = options.state || this.state;
-      var seed = options.seed || this.seed || seedrandom$2()();
+      var seed = options.seed || this.seed || seedrandom$2.alea(Math.random())();
       var schema = options.schema || this.schema.model;
 
       return entry.replace(regex, function (match) {
@@ -5151,13 +5151,13 @@ var Generator = function () {
     value: function sample() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      var seed = options.seed || this.seed || seedrandom$2()();
+      var seed = options.seed || this.seed || seedrandom$2.alea(Math.random())();
       var collection = options.collection;
 
       if (collection === undefined) return new Error('no collection was provided from which to sample');
       if (typeof collection === 'string') return collection;
 
-      var rng = seedrandom$2(seed);
+      var rng = seedrandom$2.alea(seed);
       var index = Math.floor(rng() * collection.length);
       if (index < 0 || index >= collection.length) return new Error('the calculated index of ' + index + ' went out of bounds for this collection ' + collection);
       return collection[index];

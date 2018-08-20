@@ -1,18 +1,17 @@
 var Deutung = require('../index.js');
-console.log(Deutung)
 
 const schema = {
   model: {
     farmer: {
-      name: ['Patrick', 'Jordan'],
+      name: ['Patrick', 'Jordan', 'Miles', "Marko"],
       title: ['farmer'],
-      age: '|between:18-43'
     }
-  },
-  entry: 'farmer.name|capitalize::, who was farmer.age:: years old, went with farmer.Head.name:: to the market.',
+  }
 }
 
-const g = new Deutung(schema);
+const entry = 'farmer.name|capitalize::, who was |between:18-43:: years old, went with farmer.Head.name:: to the market.';
+
+const g = new Deutung({entry: entry, schema: schema});
 let result = g.run();
 
 console.log(result)

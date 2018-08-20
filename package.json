@@ -8,8 +8,7 @@
   "scripts": {
     "test": "yarn lint && jest --coverage",
     "lint": "eslint ./dev",
-    "build": "rimraf index.js && ./node_modules/.bin/rollup -c",
-    "build-prod": "NODE_ENV=production ./node_modules/.bin/rollup -c"
+    "build": "rimraf index.js && ./node_modules/.bin/rollup -c"
   },
   "dependencies": {
     "articles": "^0.2.2",
