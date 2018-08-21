@@ -1,17 +1,13 @@
-var Deutung = require('../index.js');
+let Deutung = require('../index.js');
+let model = require('./model.js');
+let grammar = require('./grammar.js');
 
 const schema = {
-  model: {
-    farmer: {
-      name: ['Patrick', 'Jordan', 'Miles', "Marko"],
-      title: ['farmer'],
-    }
-  }
+  model,
+  grammar
 }
 
-const entry = 'farmer.name|capitalize::, who was |between:18-43:: years old, went with farmer.Head.name:: to the market.';
+let g = new Deutung({schema: schema});
+g.setEntry({name: 'entry'});
 
-const g = new Deutung({entry: entry, schema: schema});
-let result = g.run();
-
-console.log(result)
+console.log(g.run());
