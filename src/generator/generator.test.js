@@ -1,4 +1,4 @@
-import Generator from './generator.js';
+import Generator from './index.js';
 
 describe('Generator', () => {
   describe('Generator.add', () => {
