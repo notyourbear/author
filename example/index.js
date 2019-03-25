@@ -7,7 +7,7 @@ const schema = {
   grammar
 }
 
-console.log({Deutung})
+console.log('deuting', {Deutung})
 const g = new Deutung.default({schema: schema});
 g.setEntry({name: 'entry'});
 
