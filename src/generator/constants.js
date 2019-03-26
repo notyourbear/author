@@ -1,4 +1,4 @@
-const RUN_ORDER = ["split", "setModel", "modify"];
+const RUN_ORDER = ["split", "unfurlGrammars", "setHelper", "modify"];
 
 //{ splats:
 [

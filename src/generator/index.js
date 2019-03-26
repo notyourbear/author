@@ -97,6 +97,7 @@ class Generator {
     });
   }
 
+  // starts with |
   setHelper(matcher = {}) {
     let [modifier, value] = matcher.match.slice(1).split(":");
     let isHelper = matcher.match[0] === "|";
@@ -106,6 +107,35 @@ class Generator {
           replacement: this.modify({ modifier, value })
         }
       : matcher;
+  }
+
+  unfurlGrammars(matcher = {}, options = {}) {
+    let grammar = options.grammar || this.schema.grammar;
+    let isGrammar = matcher.match[0] === "!";
+
+    if (!isGrammar) return matcher;
+    let entry = matcher.match.slice(1, -2);
+
+    console.log({ entry });
+    let newEntry = grammar[entry];
+
+    if (newEntry === undefined) {
+      return new Error(
+        `new: the grammar for ${entry} does not exist in the provided grammar schema: ${grammar}`
+      );
+    }
+
+    return {
+      ...matcher,
+      replacement: this.run({
+        entry: newEntry,
+        regex: options.regex || this.regex,
+        model: options.model || this.model,
+        state: options.state || this.state,
+        seed: options.seed || this.seed,
+        schema: options.schema || this.schema
+      })
+    };
   }
 
   /* Compiles and returns text. If a state is provided, it will use that. Otherwise it will run with a given state. */
@@ -119,7 +149,11 @@ class Generator {
 
     let splats = this.split({ entry, regex });
 
-    console.log("!?", splats.map(matcher => this.setHelper(matcher)));
+    console.log("|", splats.map(matcher => this.setHelper(matcher)));
+    console.log(
+      "!",
+      splats.map(matcher => this.unfurlGrammars(matcher, options))
+    );
 
     return entry.replace(regex, match => {
       let split = match.split(".");
