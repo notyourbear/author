@@ -99,6 +99,7 @@ class Generator {
 
   // starts with |
   setHelper(matcher = {}) {
+    console.log("---setHelper---");
     let [modifier, value] = matcher.match.slice(1).split(":");
     let isHelper = matcher.match[0] === "|";
     return isHelper
@@ -109,7 +110,9 @@ class Generator {
       : matcher;
   }
 
+  // starts with !
   unfurlGrammars(matcher = {}, options = {}) {
+    console.log("---unfurl---");
     let grammar = options.grammar || this.schema.grammar;
     let isGrammar = matcher.match[0] === "!";
 
@@ -138,6 +141,13 @@ class Generator {
     };
   }
 
+  generateNewSeed(options = {}) {
+    const modifier = options.modifier || 1;
+    const seed = options.seed || this.seed || seedrandom.alea(Math.random())();
+    const secondSeed = seedrandom.alea(`${seed}:${modifier}`)();
+    return `${seed}:${secondSeed}`;
+  }
+
   /* Compiles and returns text. If a state is provided, it will use that. Otherwise it will run with a given state. */
   run(options = {}) {
     let entry = options.entry || this.entry;
@@ -149,11 +159,11 @@ class Generator {
 
     let splats = this.split({ entry, regex });
 
-    console.log("|", splats.map(matcher => this.setHelper(matcher)));
-    console.log(
-      "!",
-      splats.map(matcher => this.unfurlGrammars(matcher, options))
-    );
+    // console.log("|", splats.map(matcher => this.setHelper(matcher)));
+    // console.log(
+    //   "!",
+    //   splats.map(matcher => this.unfurlGrammars(matcher, options))
+    // );
 
     return entry.replace(regex, match => {
       let split = match.split(".");
@@ -181,7 +191,7 @@ class Generator {
             schema
           });
         default:
-          let schemaSeed = "" + seed + ":for schema-model";
+          let schemaSeed = this.generateNewSeed(options);
           // model from schema needs to slightly change the seed for a little additonal variance.
           let valueFromModel =
             split.length === 3

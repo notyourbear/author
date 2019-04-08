@@ -6,7 +6,7 @@
   "description": "A model-backed generative text grammar tool",
   "license": "MIT",
   "scripts": {
-    "test": "yarn lint && jest --coverage",
+    "test": "npm run lint && jest --coverage",
     "lint": "eslint ./dev",
     "build": "webpack --mode production"
   },
