@@ -6,6 +6,6 @@ module.exports = {
     type: ["frog", "salamander", "toad", "snake"]
   },
   location: {
-    setting: ["woods"]
+    setting: ["woods", "forest", "jungle"]
   }
 };

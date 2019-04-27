@@ -10,4 +10,4 @@ const schema = {
 const g = new Deutung.default({ schema: schema });
 g.setEntry({ name: "entry" });
 
-console.log(g.run());
+console.log(g.run({ seed: "living" }));

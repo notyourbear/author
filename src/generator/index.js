@@ -97,9 +97,21 @@ class Generator {
     });
   }
 
+  mapReplacements(options = {}) {
+    let entry = options.entry || this.entry;
+    let regex = options.regex || this.regex;
+    let splats = options.splats || [];
+    let result = entry;
+    splats
+      .filter(splat => splat.replacement)
+      .forEach(splat => {
+        result = result.replace(splat.match, splat.replacement);
+      });
+    return result;
+  }
+
   // starts with |
-  setHelper(matcher = {}) {
-    console.log("---setHelper---");
+  getHelper(matcher = {}) {
     let [modifier, value] = matcher.match.slice(1).split(":");
     let isHelper = matcher.match[0] === "|";
     return isHelper
@@ -110,16 +122,106 @@ class Generator {
       : matcher;
   }
 
+  getModel(matcher = {}, options = {}) {
+    switch (matcher.split.length) {
+      case 2:
+        return this.getModelFromSchema(matcher, options);
+      case 3:
+        return this.getAndSetModelFromState(matcher, options);
+      default:
+        return matcher;
+    }
+  }
+
+  getAndSetModelFromState(matcher = {}, options = {}) {
+    let state = options.state || this.state;
+    let schema = options.schema || this.schema.model;
+    let [model, name, property] = matcher.split;
+    let modifiers = null;
+
+    if (property.includes("|")) {
+      modifiers = property.split("|").slice(1);
+      property = property.slice(0, property.indexOf("|"));
+    }
+
+    let replacement =
+      state[model] && state[model][name] && state[model][name][property];
+
+    if (!replacement) {
+      if (state[model] === undefined) {
+        state[model] = {};
+      }
+      if (state[model][name] === undefined) {
+        state[model][name] = {};
+      }
+      if (state[model][name][property] === undefined) {
+        state[model][name][property] = this.modelFromSchema({
+          split: [model, property],
+          schema
+        });
+      }
+      replacement = state[model][name][property];
+    }
+
+    if (modifiers) {
+      replacement = modifiers.reduce((value, modifier) => {
+        return this.modify({ modifier, value });
+      }, replacement);
+    }
+    return {
+      ...matcher,
+      replacement
+    };
+  }
+
+  getModelFromSchema(matcher = {}, options = {}) {
+    let schema = options.schema || this.schema.model;
+    let seed = options.seed || this.seed;
+    let [model, property] = matcher.split;
+    let modifiers = null;
+
+    if (schema[model] === undefined) {
+      throw new Error(
+        `model ${model} does not exist in provided schema: ${schema}`
+      );
+    }
+
+    if (property.includes("|")) {
+      modifiers = property.split("|").slice(1);
+      property = property.slice(0, property.indexOf("|"));
+    }
+
+    if (schema[model][property] === undefined) {
+      throw new Error(
+        `model ${model} does not include property ${property} in provided schema: ${schema}`
+      );
+    }
+
+    let replacement = this.sample({
+      collection: schema[model][property],
+      seed
+    });
+
+    if (modifiers) {
+      replacement = modifiers.reduce((value, modifier) => {
+        return this.modify({ modifier, value });
+      }, replacement);
+    }
+
+    return {
+      ...matcher,
+      replacement
+    };
+  }
+
   // starts with !
-  unfurlGrammars(matcher = {}, options = {}) {
-    console.log("---unfurl---");
+  unfurlGrammar(matcher = {}, options = {}) {
     let grammar = options.grammar || this.schema.grammar;
     let isGrammar = matcher.match[0] === "!";
 
     if (!isGrammar) return matcher;
     let entry = matcher.match.slice(1, -2);
 
-    console.log({ entry });
     let newEntry = grammar[entry];
 
     if (newEntry === undefined) {
@@ -128,16 +230,11 @@ class Generator {
       );
     }
 
+    let replacement = newEntry;
+
     return {
       ...matcher,
-      replacement: this.run({
-        entry: newEntry,
-        regex: options.regex || this.regex,
-        model: options.model || this.model,
-        state: options.state || this.state,
-        seed: options.seed || this.seed,
-        schema: options.schema || this.schema
-      })
+      replacement
     };
   }
 
@@ -148,6 +245,13 @@ class Generator {
     return `${seed}:${secondSeed}`;
   }
 
+  generate(splats = [], options = {}) {
+    return splats
+      .map(splat => this.getHelper(splat))
+      .map(splat => this.getModel(splat, options))
+      .map(splat => this.unfurlGrammar(splat, options));
+  }
+
   /* Compiles and returns text. If a state is provided, it will use that. Otherwise it will run with a given state. */
   run(options = {}) {
     let entry = options.entry || this.entry;
@@ -156,58 +260,14 @@ class Generator {
     let state = options.state || this.state;
     let seed = options.seed || this.seed || seedrandom.alea(Math.random())();
     let schema = options.schema || this.schema.model;
+    let reps = entry;
 
-    let splats = this.split({ entry, regex });
+    while (reps.match(regex)) {
+      let splats = this.generate(this.split({ entry: reps, regex }));
+      reps = this.mapReplacements({ entry: reps, regex, splats });
+    }
 
-    // console.log("|", splats.map(matcher => this.setHelper(matcher)));
-    // console.log(
-    //   "!",
-    //   splats.map(matcher => this.unfurlGrammars(matcher, options))
-    // );
-
-    return entry.replace(regex, match => {
-      let split = match.split(".");
-      split[split.length - 1] = split[split.length - 1].slice(0, -2);
-      // remove trailing ::... figure out how to not include those in regex...
-      switch (true) {
-        case match[0] === "|":
-          let [modifier, value] = match.slice(1).split(":");
-          return this.modify({ modifier, value });
-        case match[0] === "!":
-          let grammar = options.grammar || this.schema.grammar;
-          let newEntry = grammar[match.slice(1, -2)];
-          if (newEntry === undefined)
-            return new Error(
-              `the grammar for ${match.slice(
-                1
-              )} does not exist in the provided grammar schema: ${grammar}`
-            );
-          return this.run({
-            entry: newEntry,
-            regex,
-            model,
-            state,
-            seed,
-            schema
-          });
-        default:
-          let schemaSeed = this.generateNewSeed(options);
-          // model from schema needs to slightly change the seed for a little additonal variance.
-          let valueFromModel =
-            split.length === 3
-              ? this.modelFromState({ state, schema, split })
-              : this.modelFromSchema({ schema, seed: schemaSeed, split });
-          let property = split[split.length - 1];
-          if (!property.includes("|")) return valueFromModel;
-
-          // can be many modifiers
-          // we don't care about the first thing in array since its the property name and we already have the value stored.
-          let modifiers = property.split("|").slice(1);
-          return modifiers.reduce((value, modifier) => {
-            return this.modify({ modifier, value });
-          }, valueFromModel);
-      }
-    });
+    return reps;
   }
 
   modelFromSchema(options = {}) {
@@ -230,38 +290,21 @@ class Generator {
     return this.sample({ collection: schema[model][property], seed });
   }
 
-  // gets and potentially sets model
-  modelFromState(options = {}) {
-    let state = options.state || this.state;
-    let schema = options.schema || this.schema.model;
-    let [model, name, property] = options.split;
-
-    let retrieved =
-      state[model] && state[model][name] && state[model][name][property];
-    if (retrieved !== undefined) return retrieved;
-
-    //generate from schema
-    if (state[model] === undefined) state[model] = {};
-    if (state[model][name] === undefined) state[model][name] = {};
-    if (state[model][name][property] === undefined)
-      state[model][name][property] = this.modelFromSchema({
-        split: [model, property],
-        schema
-      });
-    return state[model][name][property];
-  }
-
   // and then i guess i get to think about whehter modified models should simply be...changed in a different place. i think so? after the get...
   modify({ modifier, value }) {
     let fn = this.modifier[modifier];
-    if (fn === undefined)
-      return new Error(
+    if (fn === undefined) {
+      throw new Error(
         `the modifier ${modifier} does not exist in: ${this.modifier}`
       );
-    if (typeof fn !== "function")
-      return new Error(
+    }
+
+    if (typeof fn !== "function") {
+      throw new Error(
         `the modifier ${modifier} does not appear to be a function: ${fn}`
       );
+    }
+
     return Array.isArray(value)
       ? fn.apply(null, value.split("-"))
       : fn.call(null, value);
