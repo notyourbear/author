@@ -8,8 +8,7 @@
   "scripts": {
     "test": "npm run lint && jest --coverage",
     "lint": "eslint ./dev",
-    "build": "webpack --mode production",
-    "dev": "webpack"
+    "build": "webpack"
   },
   "dependencies": {
     "articles": "^0.2.2",
