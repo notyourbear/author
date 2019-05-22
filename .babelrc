@@ -1,9 +1,5 @@
 {
-  "presets": [
-    "jest",
-    ["env",
-    { "modules": false }]
-  ],
+  "presets": ["jest", ["env", { "modules": false }], "stage-3"],
   "env": {
     "test": {
       "presets": [["env"]]

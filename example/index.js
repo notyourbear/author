@@ -1,13 +1,13 @@
-let Deutung = require('../index.js');
-let model = require('./model.js');
-let grammar = require('./grammar.js');
+const Deutung = require("../dist/Deutung.js");
+const model = require("./model.js");
+const grammar = require("./grammar.js");
 
 const schema = {
   model,
   grammar
-}
+};
 
-let g = new Deutung({schema: schema});
-g.setEntry({name: 'entry'});
+const g = new Deutung.default({ schema: schema });
+g.setEntry({ name: "entry" });
 
 console.log(g.run());
