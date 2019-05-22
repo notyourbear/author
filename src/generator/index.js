@@ -108,13 +108,15 @@ class Generator {
   }
 
   // starts with |
-  getHelper(matcher = {}) {
+  getHelper(matcher = {}, options = {}) {
     let [modifier, value] = matcher.match.slice(1).split(":");
+    let seed = options.seed || this.seed;
     let isHelper = matcher.match[0] === "|";
+
     return isHelper
       ? {
           ...matcher,
-          replacement: this.modify({ modifier, value })
+          replacement: this.modify({ modifier, value, seed })
         }
       : matcher;
   }
@@ -133,6 +135,7 @@ class Generator {
   getAndSetModelFromState(matcher = {}, options = {}) {
     let state = options.state || this.state;
     let schema = options.schema || this.schema.model;
+    let seed = options.seed || this.seed;
     let [model, name, property] = matcher.split;
     let modifiers = null;
 
@@ -154,7 +157,8 @@ class Generator {
       if (state[model][name][property] === undefined) {
         state[model][name][property] = this.modelFromSchema({
           split: [model, property],
-          schema
+          schema,
+          seed
         });
       }
       replacement = state[model][name][property];
@@ -162,7 +166,7 @@ class Generator {
 
     if (modifiers) {
       replacement = modifiers.reduce((value, modifier) => {
-        return this.modify({ modifier, value });
+        return this.modify({ modifier, value, seed });
       }, replacement);
     }
     return {
@@ -201,7 +205,7 @@ class Generator {
 
     if (modifiers) {
       replacement = modifiers.reduce((value, modifier) => {
-        return this.modify({ modifier, value });
+        return this.modify({ modifier, value, seed });
       }, replacement);
     }
 
@@ -222,8 +226,8 @@ class Generator {
     let newEntry = grammar[entry];
 
     if (newEntry === undefined) {
-      return new Error(
-        `new: the grammar for ${entry} does not exist in the provided grammar schema: ${grammar}`
+      throw new Error(
+        `the grammar for ${entry} does not exist in the grammar schema: ${grammar}`
       );
     }
 
@@ -244,7 +248,7 @@ class Generator {
 
   generate(splats = [], options = {}) {
     return splats
-      .map(splat => this.getHelper(splat))
+      .map(splat => this.getHelper(splat, options))
       .map(splat => this.getModel(splat, options))
       .map(splat => this.unfurlGrammar(splat, options));
   }
@@ -260,7 +264,7 @@ class Generator {
     let reps = entry;
 
     while (reps.match(regex)) {
-      let splats = this.generate(this.split({ entry: reps, regex }));
+      let splats = this.generate(this.split({ entry: reps, regex }), { seed });
       reps = this.mapReplacements({ entry: reps, regex, splats });
     }
 
@@ -288,7 +292,7 @@ class Generator {
   }
 
   // and then i guess i get to think about whehter modified models should simply be...changed in a different place. i think so? after the get...
-  modify({ modifier, value }) {
+  modify({ modifier, value, seed }) {
     let fn = this.modifier[modifier];
     if (fn === undefined) {
       throw new Error(
@@ -302,9 +306,8 @@ class Generator {
       );
     }
 
-    return Array.isArray(value)
-      ? fn.apply(null, value.split("-"))
-      : fn.call(null, value);
+    const options = Array.isArray(value) ? [...value.split("-")] : [value];
+    return seed ? fn.apply(null, [...options, seed]) : fn.apply(null, options);
   }
 
   sample(options = {}) {
