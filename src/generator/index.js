@@ -16,8 +16,9 @@ function validateData(data) {
 class Generator {
   constructor(options = {}) {
     this.modifier = Object.assign({}, modifiers);
-    if (options.modifier)
+    if (options.modifier) {
       this.modifier = Object.assign(this.modifier, options.modifier);
+    }
 
     this.state = options.state || {};
     this.entry = options.entry;
@@ -32,40 +33,36 @@ class Generator {
   /*
     requires two things: the type of thing being added, and the data being added
   */
-  add(options = {}) {
-    let { type, data } = options;
-    let acceptedTypes = ["entry", "modifier", "model", "grammar"];
-
+  add({ type, data }) {
     switch (true) {
-      case !type || !data:
-        return new Error(
-          "Could not add because either the type or data was not present"
-        );
-      case !acceptedTypes.includes(type):
-        return new Error(
-          `Could not add because ${type} is not one of the accepted types: ${acceptedTypes}`
-        );
+      case type === undefined:
+        throw new Error("Could not add because the type is undefined");
+      case data === undefined:
+        throw new Error("Could not add because the data is undefined");
       case type === "modifier" && validateData(data):
         return (this.modifier[data.name] = data.value);
       case validateData(data) && (type === "model" || type === "grammar"):
         return (this.schema[type][data.name] = data.value);
       default:
-        if (!data.value && !data.name)
-          return new Error(
-            `Could not set or add entry, as no name or value was provided: ${data}`
+        const { name, value } = data;
+        if (!name && !value) {
+          throw new Error(
+            `Could not set entry; no name (${name}) and value (${value}) provided`
           );
+        }
 
         // entries can either be created or simply set from the available grammars.
         // if a value is provided, it is being added
-        if (data.value) return (this.entry = data.value);
+        if (value) {
+          return (this.entry = value);
+        }
 
         // if a name is provided, get the corresponding grammar
-        if (data.name && this.schema.grammar[data.name])
-          return (this.entry = this.schema.grammar[data.name]);
+        if (name && this.schema.grammar[name]) {
+          return (this.entry = this.schema.grammar[name]);
+        }
 
-        return new Error(
-          `Could not set entry, as ${data.name} is not a set grammar.`
-        );
+        return new Error(`Could not set entry; ${name} is not a grammar.`);
     }
   }
 
@@ -73,7 +70,7 @@ class Generator {
     wrapper for setting an entry.
   */
   setEntry(options = {}) {
-    let { name, value } = options;
+    const { name, value } = options;
     return this.add({ type: "entry", data: { name, value } });
   }
 
@@ -82,7 +79,7 @@ class Generator {
     I.E.: you only want to know about current models, getState({type: 'models'});
   */
   getState(options = {}) {
-    let { type } = options;
+    const { type } = options;
     if (type && this.state[type]) return this.state[type];
     return this.state;
   }
