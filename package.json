@@ -1,7 +1,7 @@
 {
   "name": "deutung",
-  "version": "1.5.1",
-  "main": "index.js",
+  "version": "1.9.9",
+  "main": "dist/Deutung.js",
   "author": "Patrick Racenberg",
   "description": "A model-backed generative text grammar tool",
   "license": "MIT",
